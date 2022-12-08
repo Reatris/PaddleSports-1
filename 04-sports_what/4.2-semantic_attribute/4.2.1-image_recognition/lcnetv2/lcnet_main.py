@@ -37,7 +37,7 @@ class LCNet_main():
                 img_data =paddle.transpose(x=img_data,perm=[0,3,1,2])
                 out = classifer_net(img_data)
                 acc = paddle.metric.accuracy(out,cls.unsqueeze(1))
-                acc_all+=acc.numpy()[0]
+                acc_all+=float(acc)
                 num+=1
                 if num == 10 and self.is_train== True:
                     break
@@ -81,7 +81,7 @@ class LCNet_main():
 
 
                 if i%100 == 3:
-                    print("loss",loss.numpy()[0],v_acc_max)
+                    print("loss",float(loss),v_acc_max)
                     
                 i+=1
                 # break
@@ -90,7 +90,7 @@ class LCNet_main():
                 model.eval()
                 v_acc = self.valid_accurary(valid_loader,model)
                 model.train()
-                print("epoch loss",loss.numpy()[0],v_acc)
+                print("epoch loss",float(loss),v_acc)
                 self.log_writer.add_scalar(tag='train/v_acc', step=i, value=v_acc)
                 if v_acc > v_acc_max:
                     v_acc_max = v_acc
